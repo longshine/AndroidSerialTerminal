@@ -130,6 +130,9 @@ public class DeviceListActivity extends Activity {
             case R.id.action_refresh:
                 refreshPorts();
                 return true;
+            case R.id.action_about:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -138,6 +138,11 @@ public class ConsoleActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.console_activity_actions, menu);
+        if (!"lite".equals(BuildConfig.FLAVOR)) {
+            MenuItem item = menu.findItem(R.id.action_about);
+            if (item != null)
+                item.setVisible(false);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -156,6 +161,9 @@ public class ConsoleActivity extends Activity {
             case R.id.action_setting:
                 startActivityForResult(new Intent(this, ConsoleSettingsActivity.class),
                         REQUEST_CODE_PREFERENCE);
+                return true;
+            case R.id.action_about:
+                startActivity(new Intent(this, SettingsActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

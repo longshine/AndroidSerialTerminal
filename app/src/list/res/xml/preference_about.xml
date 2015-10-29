@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:key="pref_version"
+        android:title="@string/app_name" />
+    <PreferenceCategory android:title="@string/licenses">
+        <Preference
+            android:summary="@string/license_mit"
+            android:title="@string/app_name">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/longshine/AndroidSerialTerminal">
+                <extra
+                    android:name="SOURCE"
+                    android:value="SELF" />
+            </intent>
+        </Preference>
+        <Preference
+            android:summary="@string/license_lgpl"
+            android:title="@string/library_usb_serial_for_android">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/mik3y/usb-serial-for-android">
+                <extra
+                    android:name="SOURCE"
+                    android:value="SELF" />
+            </intent>
+        </Preference>
+    </PreferenceCategory>
+</PreferenceScreen>

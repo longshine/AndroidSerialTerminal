@@ -1,3 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="about_title">关于</string>
+    <string name="setting_title">设置</string>
+    <string name="action_clear">清除</string>
+    <string name="action_open">打开设备</string>
+    <string name="action_close">关闭设备</string>
+    <string name="action_setting">设置 &#8230;</string>
+    <string name="action_about">关于 &#8230;</string>
+    <string name="button_write">发送</string>
+
+    <string name="pref_serial_title">串口设置</string>
+    <string name="pref_display_title">显示设置</string>
+    <string name="pref_serial_baudrate_title">波特率</string>
+    <string name="pref_serial_databits_title">数据位</string>
+    <string name="pref_serial_parity_title">奇偶校验位</string>
+    <string name="pref_serial_stopbits_title">停止位数</string>
+    <string name="pref_serial_flowcontrol_title">Flow control</string>
+    <string name="pref_display_fontsize_title"></string>
+    <string name="pref_display_typeface_title">Typeface</string>
+    <string name="pref_display_view_title">显示格式</string>
+    <string name="licenses">开源许可</string>
+    <string name="license_mit">MIT License</string>
+    <string name="license_lgpl">GNU Lesser General Public License</string>
+    <string name="library_usb_serial_for_android">Android USB host serial driver library</string>
 </resources>

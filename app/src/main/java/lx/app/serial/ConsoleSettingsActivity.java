@@ -15,6 +15,8 @@ public class ConsoleSettingsActivity extends PreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setTitle(R.string.setting_title);
     }
 
     @Override

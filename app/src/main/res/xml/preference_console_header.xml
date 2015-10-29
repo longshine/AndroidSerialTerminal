@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
+    <header
+        android:fragment="lx.app.serial.ConsoleSettingsActivity$SerialPreferenceFragment"
+        android:title="@string/pref_serial_title"
+        android:summary="" />
+    <header
+        android:fragment="lx.app.serial.ConsoleSettingsActivity$DisplayPreferenceFragment"
+        android:title="@string/pref_display_title"
+        android:summary="" />
+</preference-headers>

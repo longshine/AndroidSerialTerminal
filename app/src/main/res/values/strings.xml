@@ -2,10 +2,20 @@
     <string name="action_clear">Clear Text</string>
     <string name="action_open">Open Device</string>
     <string name="action_close">Close Device</string>
-    <string name="action_setting">Setting ...</string>
+    <string name="action_setting">Settings &#8230;</string>
     <string name="button_write">Write</string>
     <string name="write_hint">CR : \\r, LF : \\n, bin : \\u0000</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="pref_serial_title">Serial Settings</string>
+    <string name="pref_display_title">Display Settings</string>
+    <string name="pref_serial_baudrate_title">Baud rate</string>
+    <string name="pref_serial_databits_title">Data bits</string>
+    <string name="pref_serial_parity_title">Parity</string>
+    <string name="pref_serial_stopbits_title">Stop bits</string>
+    <string name="pref_serial_flowcontrol_title">Flow control</string>
+    <string name="pref_display_fontsize_title">Font size</string>
+    <string name="pref_display_typeface_title">Typeface</string>
+    <string name="pref_display_view_title">Display</string>
 </resources>

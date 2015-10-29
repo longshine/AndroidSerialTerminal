@@ -76,7 +76,12 @@ public class DeviceListActivity extends Activity {
         mManager.setListener(new UsbSerialPortManager.Listener() {
             @Override
             public void onChanged() {
-                adapter.notifyDataSetChanged();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.notifyDataSetChanged();
+                    }
+                });
             }
         });
 

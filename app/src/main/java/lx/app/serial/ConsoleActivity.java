@@ -3,10 +3,13 @@ package lx.app.serial;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -20,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hoho.android.usbserial.driver.UsbSerialPort;
+import com.hoho.android.usbserial.util.HexDump;
 import com.hoho.android.usbserial.util.SerialInputOutputManager;
 
 import java.io.IOException;
@@ -31,6 +35,8 @@ public class ConsoleActivity extends Activity {
     public static final String EXTRA_PORT_NUMBER = "lx.app.serial.PORT_NUMBER";
     private static final String TAG = ConsoleActivity.class.getSimpleName();
 
+    private static final int REQUEST_CODE_PREFERENCE = 0;
+
     private ExecutorService mExecutor = Executors.newSingleThreadExecutor();
     private UsbSerialPortManager mManager;
     private UsbSerialPort mPort;
@@ -40,6 +46,15 @@ public class ConsoleActivity extends Activity {
     private Button mBtWrite;
     private ScrollView mSvSerial;
     private TextView mTvSerial;
+
+    private int mBaudRate;
+    private int mDataBits;
+    private int mParity;
+    private int mStopBits;
+    private int mFlowControl;
+    private int mFontSize;
+    private String mTypeface;
+    private String mView;
 
     private SerialInputOutputManager mSerialIoManager;
     private final SerialInputOutputManager.Listener mSerialIoListener =
@@ -115,6 +130,8 @@ public class ConsoleActivity extends Activity {
                 writeDataToSerial();
             }
         });
+
+        loadSettings();
     }
 
     @Override
@@ -137,7 +154,8 @@ public class ConsoleActivity extends Activity {
                 mTvSerial.setText("");
                 return true;
             case R.id.action_setting:
-                Toast.makeText(this, "SETTING", Toast.LENGTH_SHORT).show();
+                startActivityForResult(new Intent(this, ConsoleSettingsActivity.class),
+                        REQUEST_CODE_PREFERENCE);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -163,6 +181,63 @@ public class ConsoleActivity extends Activity {
         super.onDestroy();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_PREFERENCE) {
+            loadSettings();
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void loadSettings() {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        mBaudRate = getStringAsInt(pref, "baudrate", 9600);
+        mDataBits = getStringAsInt(pref, "databits", UsbSerialPort.DATABITS_8);
+        mParity = getStringAsInt(pref, "parity", UsbSerialPort.PARITY_NONE);
+        mStopBits = getStringAsInt(pref, "stopbits", UsbSerialPort.STOPBITS_1);
+        mFlowControl = getStringAsInt(pref, "flowcontrol", UsbSerialPort.FLOWCONTROL_NONE);
+
+        int fontsize = getStringAsInt(pref, "fontsize", 12);
+        if (fontsize != mFontSize) {
+            mFontSize = fontsize;
+            mTvSerial.setTextSize(fontsize);
+        }
+
+        String typeface = pref.getString("typeface", null);
+        if (typeface != null && !typeface.equals(mTypeface)) {
+            mTypeface = typeface;
+            Typeface tf = null;
+            switch (typeface) {
+                case "monospace":
+                    tf = Typeface.MONOSPACE;
+                    break;
+                case "normal":
+                    tf = Typeface.DEFAULT;
+                    break;
+                case "sans":
+                    tf = Typeface.SANS_SERIF;
+                    break;
+                case "serif":
+                    tf = Typeface.SERIF;
+                    break;
+                default:
+                    break;
+            }
+            if (tf != null) {
+                mTvSerial.setTypeface(tf);
+                mEtWrite.setTypeface(tf);
+            }
+        }
+
+        String view = pref.getString("view", null);
+        if (view != null && !view.equals(mView)) {
+            mView = view;
+//            mTvSerial.setText("");
+        }
+    }
+
     private void setPortState(boolean open) {
         mOpen = open;
         mBtWrite.setEnabled(open);
@@ -170,7 +245,11 @@ public class ConsoleActivity extends Activity {
     }
 
     private void onNewData(byte[] data) {
-        mTvSerial.append(new String(data));
+        if ("hex".equalsIgnoreCase(mView)) {
+            mTvSerial.append(HexDump.dumpHexString(data));
+        } else {
+            mTvSerial.append(new String(data));
+        }
         mSvSerial.smoothScrollTo(0, mTvSerial.getBottom());
     }
 
@@ -191,7 +270,10 @@ public class ConsoleActivity extends Activity {
 
             try {
                 mPort.open(connection);
-                mPort.setParameters(38400, 8, UsbSerialPort.STOPBITS_1, UsbSerialPort.PARITY_NONE);
+                mPort.setParameters(mBaudRate, mDataBits, mStopBits, mParity);
+
+                mPort.setDTR(mFlowControl != UsbSerialPort.FLOWCONTROL_NONE);
+                mPort.setRTS(mFlowControl != UsbSerialPort.FLOWCONTROL_NONE);
             } catch (IOException e) {
                 Toast.makeText(this, "Error opening device: " + e.getMessage(),
                         Toast.LENGTH_SHORT).show();
@@ -259,6 +341,18 @@ public class ConsoleActivity extends Activity {
 
             m.writeAsync(text.getBytes());
         }
+    }
+
+    private static int getStringAsInt(SharedPreferences pref, String key, int def) {
+        String val = pref.getString(key, null);
+        if (val != null) {
+            try {
+                return Integer.parseInt(val);
+            } catch (NumberFormatException e) {
+                // ignore
+            }
+        }
+        return def;
     }
 
     private static String unescapeJava(String src) throws IOException {

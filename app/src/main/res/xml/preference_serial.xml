@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:key="baudrate"
+        android:title="@string/pref_serial_baudrate_title"
+        android:entries="@array/baudrates"
+        android:entryValues="@array/baudrates"
+        android:defaultValue="9600" />
+    <ListPreference
+        android:key="databits"
+        android:title="@string/pref_serial_databits_title"
+        android:entries="@array/databits"
+        android:entryValues="@array/databits"
+        android:defaultValue="8" />
+    <ListPreference
+        android:key="parity"
+        android:title="@string/pref_serial_parity_title"
+        android:entries="@array/parity_keys"
+        android:entryValues="@array/parity_values"
+        android:defaultValue="0" />
+    <ListPreference
+        android:key="stopbits"
+        android:title="@string/pref_serial_stopbits_title"
+        android:entries="@array/stopbits_keys"
+        android:entryValues="@array/stopbits_values"
+        android:defaultValue="1" />
+    <ListPreference
+        android:key="flowcontrol"
+        android:title="@string/pref_serial_flowcontrol_title"
+        android:entries="@array/flowcontrol_keys"
+        android:entryValues="@array/flowcontrol_values"
+        android:defaultValue="0" />
+</PreferenceScreen>

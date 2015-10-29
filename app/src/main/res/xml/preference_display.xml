@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:key="fontsize"
+        android:title="@string/pref_display_fontsize_title"
+        android:entries="@array/fontsizes"
+        android:entryValues="@array/fontsizes"
+        android:defaultValue="12" />
+    <ListPreference
+        android:key="typeface"
+        android:title="@string/pref_display_typeface_title"
+        android:entries="@array/typefaces"
+        android:entryValues="@array/typefaces"
+        android:defaultValue="monospace" />
+    <ListPreference
+        android:key="view"
+        android:title="@string/pref_display_view_title"
+        android:entries="@array/display_views"
+        android:entryValues="@array/display_views"
+        android:defaultValue="char" />
+</PreferenceScreen>
